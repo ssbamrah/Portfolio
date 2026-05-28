@@ -3,16 +3,16 @@
 # Sukhmandeep Bamrah
 ### Cybersecurity & Infrastructure
 
-[
+
 
 ![LinkedIn](https://img.shields.io/badge/LinkedIn-sukhmanbamrah-0A66C2?style=flat-square&logo=linkedin&logoColor=white)
 
-](https://linkedin.com/in/sukhmanbamrah/)
-[
+(https://linkedin.com/in/sukhmanbamrah/)
+
 
 ![GitHub](https://img.shields.io/badge/GitHub-ssbamrah-181717?style=flat-square&logo=github&logoColor=white)
 
-](https://github.com/ssbamrah)
+(https://github.com/ssbamrah)
 
 
 ![Status](https://img.shields.io/badge/Status-Open_to_Opportunities-22c55e?style=flat-square)
