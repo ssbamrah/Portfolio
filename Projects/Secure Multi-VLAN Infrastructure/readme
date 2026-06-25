@@ -11,7 +11,7 @@ The goal was to simulate a real-world network architecture while implementing be
 Project Goals
 
 - Design a routed multi-VLAN environment
-- Implement network segmentation using VLANs
+- Implement network segmentation using VXLAN/GRE
 - Configure inter-VLAN routing
 - Deploy DNS and DHCP services
 - Implement Active Directory Domain Services
@@ -26,10 +26,10 @@ Network Topology
 VLAN Structure
 
 VLAN| Purpose
-VLAN 10| Desktop Systems
+VLAN 10| Desktops
 VLAN 20| Web Services
-VLAN 30| Infrastructure Services
-VLAN 40| Restricted Systems
+VLAN 30| Infrastructure
+VLAN 40| DMZ
 
 Infrastructure Components
 
@@ -55,7 +55,7 @@ Application Servers
 - WebGoat
 - Magento
 
-Restricted Target
+DMZ
 
 - Metasploitable 3 (Windows)
 
@@ -101,12 +101,14 @@ Operating Systems
 
 Networking Technologies
 
+- VXLAN
 - VLANs
 - Routing
 - NAT
 - DHCP
 - DNS
 - Firewall Policies
+- Revwrse Proxy
 
 Authentication Services
 
@@ -117,6 +119,7 @@ Authentication Services
 Applications
 
 - WebGoat
+- WebWolf
 - Magento
 
 Security
