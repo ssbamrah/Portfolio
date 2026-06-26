@@ -24,7 +24,7 @@
 
 
 
-*Cybersecurity student at Seneca Polytechnic — hands-on in network security, enterprise infrastructure, SIEM monitoring, vulnerability assessment, and virtualization.*
+*Cybersecurity student at Seneca Polytechnic with hands-on in network security, enterprise infrastructure, SIEM monitoring, vulnerability assessment, and virtualization.*
 
 </div>
 
@@ -32,7 +32,7 @@
 
 ## 📌 About This Repository
 
-This repository is my central cybersecurity portfolio — a living record of projects, labs, infrastructure deployments, and security-focused technical work built through academic coursework, homelab experimentation, and independent learning.
+This repository is my central cybersecurity portfolio, a living record of projects, labs, infrastructure deployments, and security-focused technical work built through academic coursework, homelab experimentation, and independent learning.
 
 ---
 
