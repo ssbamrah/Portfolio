@@ -1,5 +1,5 @@
 ---
-# SPR500 Lab 3 - Group 8 - push host firewalls to all Linux hosts.
+# SPR500 Lab 3 - push host firewalls to all Linux hosts.
 #
 #   Test (no changes):   ansible-playbook site.yml --check --diff
 #   Apply everywhere:    ansible-playbook site.yml

@@ -1,5 +1,5 @@
 ---
-# SPR500 Lab 3 - Group 8 - settings shared by every host.
+# SPR500 Lab 3 - settings shared by every host.
 # Edit values here once; the template and playbook read them on every host.
 
 # Management / admin sources allowed to SSH into every host.

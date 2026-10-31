@@ -1,5 +1,5 @@
 ---
-# SPR500 Lab 3 - Group 8 - AD (Windows Server 2019) host firewall
+# SPR500 Lab 3 - AD (Windows Server 2019) host firewall
 # Run: ansible-playbook windows.yml --ask-vault-pass
 #
 # Approach: keep Windows' built-in domain-controller rules (so AD services

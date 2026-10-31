@@ -1,5 +1,5 @@
 ---
-# SPR500 Lab 3 - Group 8 - admin workstation firewall (Windows 10)
+# SPR500 Lab 3 - admin workstation firewall (Windows 10)
 # admin is the management jump box: it SSHes OUT to all VMs (Windows allows
 # outbound by default), and accepts only WinRM from mgmt inbound.
 - name: Configure admin workstation firewall
