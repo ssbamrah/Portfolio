@@ -1,0 +1,32 @@
+#!/usr/sbin/nft -f
+
+flush table inet filter
+table inet filter {
+  chain input {
+    type filter hook input priority 0; policy {{ firewall_input_policy }};
+    iifname "lo" accept
+    ct state established,related accept
+{% if firewall_allowed_icmp | default(true) %}
+    ip protocol icmp accept
+    ip6 nexthdr icmpv6 accept
+{% endif %}
+{% for rule in firewall_drop_rules | default([]) %}
+    {{ rule.family | default('ip') }} saddr {{ rule.source }} {{ rule.protocol }} dport {{ rule.port }} drop
+{% endfor %}
+{% for rule in firewall_allowed_tcp | default([]) %}
+    ip saddr {{ rule.source }} tcp dport {{ rule.port }} accept
+{% endfor %}
+{% for rule in firewall_allowed_udp | default([]) %}
+    ip saddr {{ rule.source }} udp dport {{ rule.port }} accept
+{% endfor %}
+  }
+
+  chain forward {
+    type filter hook forward priority 0; policy {{ firewall_forward_policy }};
+    ct state established,related accept
+  }
+
+  chain output {
+    type filter hook output priority 0; policy {{ firewall_output_policy }};
+  }
+}

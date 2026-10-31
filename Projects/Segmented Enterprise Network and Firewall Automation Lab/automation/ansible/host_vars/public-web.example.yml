@@ -1,0 +1,11 @@
+---
+firewall_host_role: public_web
+firewall_allowed_tcp:
+  - port: 80
+    source: 0.0.0.0/0
+  - port: 443
+    source: 0.0.0.0/0
+
+# Add the corrected host-specific deny rule only after recording its confirmed
+# source scope (admin workstation or full Users segment) and retest evidence.
+firewall_drop_rules: []

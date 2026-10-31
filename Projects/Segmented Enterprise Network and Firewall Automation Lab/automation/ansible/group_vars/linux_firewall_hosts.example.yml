@@ -1,0 +1,12 @@
+---
+# Documentation-only sample values. Replace with reviewed lab values.
+firewall_input_policy: drop
+firewall_forward_policy: drop
+firewall_output_policy: accept
+firewall_allowed_tcp: []
+firewall_allowed_udp: []
+firewall_allowed_icmp: true
+
+# Host-specific deny rules are intentionally empty until the confirmed scope
+# and exact live-lab policy are captured in sanitized, reviewed variables.
+firewall_drop_rules: []

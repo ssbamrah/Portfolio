@@ -1,0 +1,39 @@
+---
+- name: Configure Linux host firewall policy from reviewed variables
+  hosts: linux_firewall_hosts
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Render candidate nftables ruleset
+      ansible.builtin.template:
+        src: templates/nftables.conf.j2
+        dest: /tmp/nftables.conf.candidate
+        owner: root
+        group: root
+        mode: "0600"
+
+    - name: Validate candidate nftables ruleset
+      ansible.builtin.command:
+        argv:
+          - nft
+          - -c
+          - -f
+          - /tmp/nftables.conf.candidate
+      changed_when: false
+
+    - name: Install validated nftables ruleset
+      ansible.builtin.copy:
+        src: /tmp/nftables.conf.candidate
+        dest: /etc/nftables.conf
+        remote_src: true
+        owner: root
+        group: root
+        mode: "0640"
+      notify: Reload nftables
+
+  handlers:
+    - name: Reload nftables
+      ansible.builtin.service:
+        name: nftables
+        state: reloaded
