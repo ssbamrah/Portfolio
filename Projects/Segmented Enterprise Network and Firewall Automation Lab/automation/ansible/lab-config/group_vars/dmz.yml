@@ -1,0 +1,8 @@
+---
+# DMZ zone (VLAN 30) defaults.
+# DMZ hosts resolve names via the PUBLIC DNS (split-horizon).
+resolver: "{{ dns_public }}"
+
+# DMZ hosts get their address by DHCP relay; allow the lease/renew path
+# to the private DHCP server (UDP 67) - the only traffic DMZ -> Infra.
+dmz_allow_dhcp: true

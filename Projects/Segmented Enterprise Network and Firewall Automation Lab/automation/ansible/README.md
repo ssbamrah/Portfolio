@@ -1,8 +1,8 @@
 # Ansible Reference Examples
 
-These sanitized examples describe the project's automation pattern. They are portfolio references, not a ready-to-run copy of the live lab. The example inventory uses documentation-only addresses and placeholder credentials. Review the target OS, interfaces, variable values, and management access before adapting them.
+`lab-config/` contains the project Ansible playbooks, inventory, variables, and nftables template. The files at this directory level are smaller sanitized reference examples. Review lab-specific values and access before adapting any file.
 
-The examples intentionally contain no Vault files, passwords, private keys, actual addresses, or real hostnames. Router firewall policy is outside this automation set. Windows and client automation are summarized in the project docs; use reviewed project playbooks only after sanitizing them.
+Vault files and decrypted passwords are excluded. Router firewall policy is outside this automation set because the routers are hand-managed. The `public` host policy in `lab-config/` reflects the intended allowed HTTP/HTTPS access; the temporary deny used during the Ansible demonstration was removed.
 
 ## Linux host firewall flow
 

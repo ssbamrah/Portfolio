@@ -1,0 +1,84 @@
+#!/usr/sbin/nft -f
+# SPR500 Lab 3 - Group 8 - host firewall for {{ inventory_hostname }}
+# MANAGED BY ANSIBLE - do not edit by hand. Source: lab3-firewall/ on mgmt.
+# Rendered {{ ansible_date_time.iso8601 | default('') }}
+flush ruleset
+
+table inet filter {
+    chain input {
+        type filter hook input priority 0; policy drop;
+        iif "lo" accept
+        ct state established,related accept
+        ct state invalid drop
+
+{% if drop_rules is defined %}
+        # ---- explicit drops (evaluated before allows) ----
+{% for d in drop_rules %}
+        ip saddr {{ d.from }} {{ d.proto }} dport {{ d.dport }} log prefix "{{ inventory_hostname }}-BLOCK " drop    # {{ d.comment }}
+{% endfor %}
+{% endif %}
+        # ICMP (ping / troubleshooting), rate-limited
+        ip protocol icmp icmp type { echo-request, echo-reply, destination-unreachable, time-exceeded, parameter-problem } limit rate 10/second accept
+
+        # Management SSH: admin workstation + Ansible control node only
+        tcp dport 22 ip saddr { {{ admin_ip }}, {{ mgmt_ip }} } accept
+
+{% if inbound_rules is defined %}
+        # ---- service rules for this host ----
+{% for r in inbound_rules %}
+{% if r.from == "any" %}
+        {{ r.proto }} dport {{ r.dport }}{% if r.rate is defined %} limit rate {{ r.rate }}{% endif %} accept    # {{ r.comment }}
+{% else %}
+        ip saddr {{ r.from }} {{ r.proto }} dport {{ r.dport }}{% if r.rate is defined %} limit rate {{ r.rate }}{% endif %} accept    # {{ r.comment }}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+        # Everything else is dropped by policy; log a sample for evidence
+        limit rate 5/second log prefix "{{ inventory_hostname }}-IN-DROP " level info
+    }
+
+    chain forward {
+        type filter hook forward priority 0; policy drop;
+        # Hosts are endpoints, not routers: no forwarding.
+    }
+
+    chain output {
+        type filter hook output priority 0; policy drop;
+
+        oif "lo" accept
+        ct state established,related accept
+
+        # Name resolution to this zone's resolver
+        ip daddr {{ resolver }} udp dport 53 accept    # DNS to resolver
+        ip daddr {{ resolver }} tcp dport 53 accept    # DNS to resolver (tcp)
+
+{% if allow_ntp | default(true) %}
+        udp dport 123 accept    # NTP
+{% endif %}
+
+{% if dmz_allow_dhcp | default(false) %}
+        # DMZ host renews its DHCP lease from the private DHCP server (only Infra traffic allowed)
+        ip daddr {{ dns_private }} udp dport 67 accept    # DHCP renew to dns-dhcp
+        udp sport 68 udp dport 67 accept                  # DHCP broadcast (initial lease)
+{% endif %}
+
+{% if extra_outbound is defined %}
+        # ---- extra outbound specific to this host ----
+{% for o in extra_outbound %}
+        ip daddr {% if "," in o.to %}{ {{ o.to }} }{% else %}{{ o.to }}{% endif %} {{ o.proto }} dport {{ o.dport }} accept    # {{ o.comment }}
+{% endfor %}
+{% endif %}
+
+{% if allow_internet | default(true) %}
+        # Internet access for updates (80/443). Toggle: set allow_internet=false to drop.
+        tcp dport { 80, 443 } accept    # HTTP/HTTPS out (updates)
+{% endif %}
+
+        # ICMP out for troubleshooting
+        ip protocol icmp accept
+
+        # Drop and log anything else leaving the host
+        limit rate 5/second log prefix "{{ inventory_hostname }}-OUT-DROP " level info
+    }
+}

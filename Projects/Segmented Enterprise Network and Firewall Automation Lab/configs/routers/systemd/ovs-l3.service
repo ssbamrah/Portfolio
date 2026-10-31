@@ -1,0 +1,13 @@
+[Unit]
+Description=OVS VLAN SVI gateway IPs
+Requires=openvswitch-switch.service
+After=openvswitch-switch.service systemd-networkd.service
+Before=network-online.target
+ 
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/ovs-l3.sh
+ 
+[Install]
+WantedBy=multi-user.target

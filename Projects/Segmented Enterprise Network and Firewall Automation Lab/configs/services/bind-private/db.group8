@@ -1,0 +1,42 @@
+$TTL    3600
+@       IN  SOA dns-dhcp.group8.local. admin.group8.local. (
+                2026100507
+                3600
+                900
+                604800
+                300 )
+;
+@               IN  NS  dns-dhcp.group8.local.
+ 
+; ---- Routers ----
+r1              IN  A   192.168.8.193
+r1              IN  A   10.10.30.1
+r2              IN  A   10.10.10.1
+r2              IN  A   192.168.8.194
+r2              IN  A   172.16.0.1
+ 
+; ---- USERS ----
+admin           IN  A   172.16.0.2
+ 
+; ---- INFRASTRUCTURE ----
+ad              IN  A   10.10.10.10
+dns-dhcp        IN  A   10.10.10.11
+file            IN  A   10.10.10.12
+internal        IN  A   10.10.10.13
+ 
+; ---- DMZ ----
+public          IN  A   10.10.30.10
+shop            IN  A   10.10.30.11
+dns-public      IN  A   10.10.30.12
+ 
+; ---- Domain apex (AD) ----
+@                        IN A   10.10.10.10
+ 
+; ---- AD locator records ----
+_gc._tcp                 IN SRV 0 100 3268 ad.group8.local.
+_ldap._tcp               IN SRV 0 100 389  ad.group8.local.
+_ldap._tcp.dc._msdcs     IN SRV 0 100 389  ad.group8.local.
+_kerberos._tcp           IN SRV 0 100 88   ad.group8.local.
+_kerberos._tcp.dc._msdcs IN SRV 0 100 88   ad.group8.local.
+_kpasswd._tcp            IN SRV 0 100 464  ad.group8.local.
+_ldap._tcp.pdc._msdcs    IN SRV 0 100 389  ad.group8.local.

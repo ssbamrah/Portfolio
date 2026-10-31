@@ -1,0 +1,6 @@
+---
+# file (10.10.10.12) - file server (Infra, VLAN 20)
+inbound_rules:
+  - { proto: tcp, dport: "{ 139, 445 }", from: "{{ users_net }}", comment: "SMB from Users" }
+  - { proto: udp, dport: "{ 137, 138 }", from: "{{ users_net }}", comment: "NetBIOS from Users" }
+# allow_internet inherited from group_vars/all.yml (true for now; set false here to drop later)

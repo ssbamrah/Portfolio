@@ -1,0 +1,40 @@
+---
+# SPR500 Lab 3 - Group 8 - admin workstation firewall (Windows 10)
+# admin is the management jump box: it SSHes OUT to all VMs (Windows allows
+# outbound by default), and accepts only WinRM from mgmt inbound.
+- name: Configure admin workstation firewall
+  hosts: clients
+  gather_facts: false
+  vars:
+    mgmt_ip: "10.10.10.14"
+  tasks:
+    - name: Firewall on for all profiles
+      community.windows.win_firewall:
+        state: enabled
+        profiles: [Domain, Private, Public]
+
+    - name: Allow WinRM (5985) from mgmt only
+      community.windows.win_firewall_rule:
+        name: "WinRM from mgmt (Lab3)"
+        localport: 5985
+        protocol: tcp
+        direction: in
+        action: allow
+        remoteip: "{{ mgmt_ip }}"
+        enabled: true
+        state: present
+
+    - name: Allow inbound ICMP (troubleshooting)
+      community.windows.win_firewall_rule:
+        name: "ICMPv4 in (Lab3)"
+        protocol: icmpv4
+        direction: in
+        action: allow
+        enabled: true
+        state: present
+
+    - name: Disable the default WinRM rule (any source)
+      community.windows.win_firewall_rule:
+        name: "Windows Remote Management (HTTP-In)"
+        enabled: false
+        state: present

@@ -1,0 +1,5 @@
+$TTL 86400
+@   IN SOA dns-dhcp.group8.local. admin.group8.local. ( 2026100502 3600 900 604800 86400 )
+    IN NS  dns-dhcp.group8.local.
+1   IN PTR r2.group8.local.
+2   IN PTR admin.group8.local.

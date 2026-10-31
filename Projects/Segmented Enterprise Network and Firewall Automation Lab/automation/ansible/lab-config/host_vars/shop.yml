@@ -1,0 +1,4 @@
+---
+# shop (10.10.30.11) - e-commerce website (DMZ, VLAN 30)
+inbound_rules:
+  - { proto: tcp, dport: "{ 80, 443 }", from: "any", rate: "25/second", comment: "Shop website from anyone (rate-limited)" }

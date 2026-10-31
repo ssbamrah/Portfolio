@@ -1,0 +1,43 @@
+---
+# SPR500 Lab 3 - Group 8 - push host firewalls to all Linux hosts.
+#
+#   Test (no changes):   ansible-playbook site.yml --check --diff
+#   Apply everywhere:    ansible-playbook site.yml
+#   One host only:       ansible-playbook site.yml --limit file
+#   Drop internet later: set allow_internet: false (group_vars/all.yml or a host_vars file), re-run.
+#
+# Safety: the template is validated with "nft -c" before it is applied,
+# so a broken ruleset is never loaded.
+
+- name: Configure host-based nftables firewalls
+  hosts: linux
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Ensure nftables is installed
+      ansible.builtin.package:
+        name: nftables
+        state: present
+
+    - name: Render the firewall ruleset from the template
+      ansible.builtin.template:
+        src: templates/nftables.conf.j2
+        dest: /etc/nftables.conf
+        owner: root
+        group: root
+        mode: "0644"
+        validate: "nft -c -f %s"      # refuses to write a ruleset that fails syntax check
+      notify: reload nftables
+
+    - name: Enable and start nftables
+      ansible.builtin.systemd:
+        name: nftables
+        enabled: true
+        state: started
+
+  handlers:
+    - name: reload nftables
+      ansible.builtin.systemd:
+        name: nftables
+        state: reloaded

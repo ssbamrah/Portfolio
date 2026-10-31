@@ -1,0 +1,9 @@
+---
+# mgmt (10.10.10.14) - Ansible control node (Infra, VLAN 20)
+# No inbound services; the template's common rules already allow SSH-in from
+# admin + mgmt and ICMP. These are the extra OUTBOUND rules mgmt needs.
+extra_outbound:
+  - { proto: tcp, dport: "22", to: "{{ infra_net }}", comment: "SSH to Infra hosts (Ansible)" }
+  - { proto: tcp, dport: "5985", to: "{{ ad_host }}", comment: "WinRM to AD (Ansible Windows)" }
+  - { proto: tcp, dport: "5985", to: "172.16.0.2", comment: "WinRM to admin workstation" }    
+  - { proto: tcp, dport: "22", to: "{{ dmz_net }}",   comment: "SSH to DMZ hosts (Ansible)" }

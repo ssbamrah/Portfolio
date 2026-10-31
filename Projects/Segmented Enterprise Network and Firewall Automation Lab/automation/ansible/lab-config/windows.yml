@@ -1,0 +1,76 @@
+---
+# SPR500 Lab 3 - Group 8 - AD (Windows Server 2019) host firewall
+# Run: ansible-playbook windows.yml --ask-vault-pass
+#
+# Approach: keep Windows' built-in domain-controller rules (so AD services
+# keep working), ensure the firewall is ON, and scope the management
+# protocols - RDP to admin only, WinRM to mgmt only.
+
+- name: Configure AD host firewall (Windows Defender Firewall)
+  hosts: windows
+  gather_facts: false
+
+  vars:
+    admin_ip: "172.16.0.2"     # admin workstation
+    mgmt_ip:  "10.10.10.14"    # Ansible control node
+
+  tasks:
+    - name: Ensure Windows Firewall is enabled on all profiles
+      community.windows.win_firewall:
+        state: enabled
+        profiles: [Domain, Private, Public]
+
+    - name: Keep built-in Active Directory Domain Services rules enabled
+      community.windows.win_firewall_rule:
+        group: "Active Directory Domain Services"
+        enabled: true
+        state: present
+
+    - name: Keep built-in DNS service rules enabled
+      community.windows.win_firewall_rule:
+        group: "DNS Service"
+        enabled: true
+        state: present
+
+    - name: Keep built-in Kerberos / File and Printer Sharing rules enabled
+      community.windows.win_firewall_rule:
+        group: "File and Printer Sharing"
+        enabled: true
+        state: present
+
+    # ---- RDP: admin only ----
+    - name: Disable the default "allow RDP from anywhere" rules
+      community.windows.win_firewall_rule:
+        group: "Remote Desktop"
+        enabled: false
+        state: present
+
+    - name: Allow RDP from admin workstation only
+      community.windows.win_firewall_rule:
+        name: "RDP from admin (Lab3)"
+        localport: 3389
+        protocol: tcp
+        direction: in
+
+        action: allow
+        remoteip: "{{ admin_ip }}"
+        enabled: true
+        state: present
+
+    # ---- WinRM: mgmt only ----
+    - name: Allow WinRM (5985) from mgmt only
+      community.windows.win_firewall_rule:
+        name: "WinRM from mgmt (Lab3)"
+        localport: 5985
+        protocol: tcp
+        direction: in
+        action: allow
+        remoteip: "{{ mgmt_ip }}"
+        enabled: true
+        state: present
+
+    - name: Disable the default WinRM rule (any source)
+      community.windows.win_firewall_rule:
+        name: "Windows Remote Management (HTTP-In)"
+        enabled: false
+        state: present

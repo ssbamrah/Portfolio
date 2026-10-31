@@ -1,0 +1,28 @@
+---
+# SPR500 Lab 3 - Group 8 - settings shared by every host.
+# Edit values here once; the template and playbook read them on every host.
+
+# Management / admin sources allowed to SSH into every host.
+admin_ip: "172.16.0.2"      # admin workstation
+mgmt_ip:  "10.10.10.14"     # Ansible control node (this host)
+
+# Zone subnets (CIDR) - used to write readable rules.
+users_net:   "172.16.0.0/24"
+infra_net:   "10.10.10.0/24"
+dmz_net:     "10.10.30.0/24"
+transit_net: "192.168.8.192/30"
+
+# Key service hosts.
+dns_private: "10.10.10.11"   # dns-dhcp  (private DNS + DHCP server)
+dns_public:  "10.10.30.12"   # dns-public
+ad_host:     "10.10.10.10"
+
+# Public upstream resolvers (only dns-public is allowed to use these).
+upstream_dns: ["1.1.1.1", "8.8.8.8"]
+
+# Default: hosts may reach the Internet on 80/443 for updates.
+# Override per host in host_vars to tighten later (set allow_internet: false).
+allow_internet: true
+
+# NTP is allowed outbound from every host by default.
+allow_ntp: true

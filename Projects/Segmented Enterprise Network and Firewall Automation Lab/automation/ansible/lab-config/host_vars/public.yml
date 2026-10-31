@@ -1,0 +1,4 @@
+---
+# public (10.10.30.10) - corporate website (DMZ, VLAN 30)
+inbound_rules:
+  - { proto: tcp, dport: "{ 80, 443 }", from: "any", rate: "25/second", comment: "Public website from anyone (rate-limited)" }

@@ -1,0 +1,4 @@
+---
+# Infrastructure zone (VLAN 20) defaults.
+# Infra hosts resolve names via the PRIVATE DNS.
+resolver: "{{ dns_private }}"

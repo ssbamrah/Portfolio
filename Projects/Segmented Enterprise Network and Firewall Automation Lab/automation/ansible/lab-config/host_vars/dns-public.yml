@@ -1,0 +1,9 @@
+---
+# dns-public (10.10.30.12) - public DNS (DMZ, VLAN 30)
+inbound_rules:
+  - { proto: udp, dport: "53", from: "any", comment: "Public DNS from anyone" }
+  - { proto: tcp, dport: "53", from: "any", comment: "Public DNS from anyone (tcp)" }
+# The only host allowed to run recursion out to the Internet.
+extra_outbound:
+  - { proto: udp, dport: "53", to: "{{ upstream_dns | join(', ') }}", comment: "Recursive DNS to upstream" }
+  - { proto: tcp, dport: "53", to: "{{ upstream_dns | join(', ') }}", comment: "Recursive DNS to upstream (tcp)" }

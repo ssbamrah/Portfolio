@@ -1,0 +1,13 @@
+$TTL    3600
+@       IN  SOA dns-dhcp.group8.local. admin.group8.local. (
+                2026092202  ; serial (YYYYMMDDnn)
+                3600        ; refresh
+                900         ; retry
+                604800      ; expire
+                300 )       ; negative cache TTL
+;
+@       IN  NS  dns-dhcp.group8.local.
+ 
+; Transit 192.168.8.192/30
+193     IN  PTR r1.group8.local.
+194     IN  PTR r2.group8.local.

@@ -1,0 +1,14 @@
+$TTL 3600
+@       IN  SOA dns-public.group8.local. admin.group8.local. (
+                2026100702
+                3600
+                900
+                604800
+                300 )
+ 
+@           IN  NS  dns-public.group8.local.
+ 
+dns-public  IN  A   10.10.30.12
+public      IN  A   10.10.30.10
+shop        IN  A   10.10.30.11
+www         IN  CNAME public

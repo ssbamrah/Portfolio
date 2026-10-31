@@ -1,0 +1,28 @@
+zone "group8.local" {
+    type master;
+    file "/etc/bind/zones/db.group8";
+};
+ 
+// Reverse lookup zone (192.168.8.0/24)
+zone "8.168.192.in-addr.arpa" {
+    type master;
+    file "/etc/bind/zones/db.192.168.8";
+};
+ 
+// USERS
+zone "0.16.172.in-addr.arpa" {
+    type master;
+    file "/etc/bind/zones/db.172.16.0";
+};
+ 
+// INFRASTRUCTURE
+zone "10.10.10.in-addr.arpa" {
+    type master;
+    file "/etc/bind/zones/db.10.10.10";
+};
+ 
+// DMZ
+zone "30.10.10.in-addr.arpa" {
+    type master;
+    file "/etc/bind/zones/db.10.10.30";
+};

@@ -1,0 +1,5 @@
+zone "group8.local" {
+    type master;
+    file "/etc/bind/db.group8";
+    allow-query { any; };
+};

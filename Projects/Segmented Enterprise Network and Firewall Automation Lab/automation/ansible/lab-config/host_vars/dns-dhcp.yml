@@ -1,0 +1,20 @@
+---
+# dns-dhcp (10.10.10.11) - private DNS + DHCP server (Infra, VLAN 20)
+inbound_rules:
+  - { proto: udp, dport: "53", from: "{{ users_net }}", comment: "DNS from Users" }
+  - { proto: tcp, dport: "53", from: "{{ users_net }}", comment: "DNS from Users (tcp)" }
+  - { proto: udp, dport: "53", from: "{{ infra_net }}", comment: "DNS from Infra" }
+  - { proto: tcp, dport: "53", from: "{{ infra_net }}", comment: "DNS from Infra (tcp)" }
+  - { proto: udp, dport: "67", from: "{{ users_net }}", comment: "DHCP renewals from Users" }
+  - { proto: udp, dport: "67", from: "{{ dmz_net }}",   comment: "DHCP renewals from DMZ (via relay)" }
+  - { proto: udp, dport: "67", from: "10.10.30.1",      comment: "DHCP relay from r1 (DMZ)" }
+# Outbound: forwards unresolved queries to the public DNS.
+extra_outbound:
+  - { proto: udp, dport: "53", to: "{{ dns_public }}", comment: "DNS forward to dns-public" }
+  - { proto: tcp, dport: "53", to: "{{ dns_public }}", comment: "DNS forward to dns-public (tcp)" }
+  - { proto: udp, dport: "68", to: "{{ users_net }}", comment: "DHCP offer/ack to Users clients" }
+  - { proto: udp, dport: "67", to: "172.16.0.1", comment: "DHCP reply to r2 relay (Users)" }
+  - { proto: udp, dport: "67", to: "10.10.30.1",      comment: "DHCP reply to r1 relay (DMZ)" }
+
+drop_rules:
+  - { proto: tcp, dport: "22", from: "172.16.0.2", comment: "Block SSH from admin (demo)" }
