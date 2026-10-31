@@ -11,21 +11,7 @@ I designed and built a segmented enterprise network in VMware Workstation for Se
 
 ## Architecture
 
-```mermaid
-flowchart LR
-  WAN(("WAN / Internet"))
-  R1["r1 - edge router<br/>NAT, nftables, OSPF"]
-  R2["r2 - internal router<br/>nftables, OSPF"]
-  DMZ["DMZ - VLAN 30<br/>10.10.30.0/24<br/>public web, shop, public DNS"]
-  USERS["Users - VLAN 10<br/>172.16.0.0/24<br/>admin workstation, employees"]
-  INFRA["Infrastructure - VLAN 20<br/>10.10.10.0/24<br/>AD, DNS/DHCP, file, intranet, Ansible mgmt"]
-
-  WAN --- R1
-  R1 --- DMZ
-  R1 ---|"Transit - VLAN 99<br/>192.168.8.192/30<br/>OSPF area 0, MD5 auth"| R2
-  R2 --- USERS
-  R2 --- INFRA
-```
+![Network topology: Users, Infrastructure, DMZ, and External zones connected through r1 and r2](diagrams/network-topology.jpg)
 
 - **Switching:** Open vSwitch on both routers, with VLAN SVIs acting as Layer 3 gateways.
 - **Routing:** FRRouting OSPF in a multi-area design (backbone on the transit link, one area per segment) with MD5 authentication on area 0. r1 originates the default route.

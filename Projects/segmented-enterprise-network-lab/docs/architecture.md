@@ -2,47 +2,7 @@
 
 ## Topology
 
-```mermaid
-flowchart TB
-  WAN(("WAN / Internet"))
-
-  subgraph R1["r1 - edge router"]
-    R1WAN["ens33 - WAN (DHCP, NAT)"]
-    R1V30["vlan30 - 10.10.30.1/24"]
-    R1V99["vlan99 - 192.168.8.193/30"]
-  end
-
-  subgraph R2["r2 - internal router"]
-    R2V99["vlan99 - 192.168.8.194/30"]
-    R2V10["vlan10 - 172.16.0.1/24"]
-    R2V20["vlan20 - 10.10.10.1/24"]
-  end
-
-  subgraph DMZ["DMZ - VLAN 30"]
-    PUB["public .10<br/>corporate website"]
-    SHOP["shop .11<br/>e-commerce"]
-    DNSPUB["dns-public .12<br/>public BIND"]
-  end
-
-  subgraph USERS["Users - VLAN 10"]
-    ADMIN["admin .2<br/>admin workstation"]
-    EMP["employee workstations<br/>DHCP .20-.200"]
-  end
-
-  subgraph INFRA["Infrastructure - VLAN 20"]
-    AD["ad .10<br/>Active Directory"]
-    DNSDHCP["dns-dhcp .11<br/>private BIND + ISC DHCP"]
-    FILE["file .12<br/>SMB"]
-    INTWEB["internal .13<br/>intranet"]
-    MGMT["mgmt .14<br/>Ansible control node"]
-  end
-
-  WAN --- R1WAN
-  R1V30 --- DMZ
-  R1V99 ---|"OSPF area 0, MD5"| R2V99
-  R2V10 --- USERS
-  R2V20 --- INFRA
-```
+![Network topology: Users, Infrastructure, DMZ, and External zones connected through r1 and r2](../diagrams/network-topology.jpg)
 
 | Segment | VLAN | Subnet | Gateway | OSPF area |
 |---|---:|---|---|---:|
