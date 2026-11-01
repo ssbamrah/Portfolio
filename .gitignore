@@ -1,1 +1,19 @@
 AGENTS.md
+
+# Ansible Vault files and vault passwords
+vault.yml
+vault.yaml
+*vault*.yml
+*vault*.yaml
+**/group_vars/**/vault*
+**/host_vars/**/vault*
+.vault_pass
+.vault_pass*
+*.vault
+vault_password*
+vault-password*
+
+# Other secrets
+*.pem
+*.key
+.env
