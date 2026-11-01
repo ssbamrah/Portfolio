@@ -6,8 +6,8 @@
 
 *Hands-on in network security, enterprise infrastructure, SIEM monitoring, vulnerability assessment, and virtualization.*
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-sukhmanbamrah-0A66C2?style=for-the-badge)](https://linkedin.com/in/sukhmanbamrah/)
-[![GitHub](https://img.shields.io/badge/GitHub-ssbamrah-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ssbamrah)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-sukhmanbamrah-0A66C2?style=flat)](https://linkedin.com/in/sukhmanbamrah/)
+[![GitHub](https://img.shields.io/badge/GitHub-ssbamrah-181717?style=flat&logo=github&logoColor=white)](https://github.com/ssbamrah)
 
 🟢 **Open to opportunities**
 
